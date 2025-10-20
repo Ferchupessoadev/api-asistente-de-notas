@@ -33,9 +33,10 @@ class AuthController extends Controller
 
     public function register(RegisterFormRequest $request): JsonResponse  
     {
-
-        User::create(attributes: $request->validated());
+        $user = User::create(attributes: $request->validated());
         $headers = [];
+
+        $user->assignRole('user');
         
         return response()->json(data:[
             'message' => 'Usuario creado con exito',
