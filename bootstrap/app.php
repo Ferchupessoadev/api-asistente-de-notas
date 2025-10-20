@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\TeacherMiddleware;
 use App\Http\Middleware\ForceJson;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -21,6 +23,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'abilities' => CheckAbilities::class,
             'ability' => CheckForAnyAbility::class,
+            'admin'=> AdminMiddleware::class,
+            'teacher' => TeacherMiddleware::class,
         ]);
 
         $middleware->prepend(ForceJson::class);
