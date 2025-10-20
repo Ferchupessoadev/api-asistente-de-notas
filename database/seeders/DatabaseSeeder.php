@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'ferchodev',
             'email' => 'fernandomatiaspessoa471@gmail.com',
             'password' => Hash::make('123ferchu')
@@ -24,6 +24,13 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             RoleSeeder::class,
+            CourseSeeder::class,
+            StudentSeeder::class,
+            SubjectSeeder::class,
         ]);
+
+        $user->assignRole('admin');
+        $user->assignRole('teacher');
+        $user->assignRole('user');
     }
 }
