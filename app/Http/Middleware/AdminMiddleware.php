@@ -20,8 +20,8 @@ class AdminMiddleware
         if (!$user || !$user->hasRole('admin')) {
             return response()->json([
                 'message' => 'Resource forbidden for non-admin users', 
-                'status' => 403
-            ], 404);
+                'status' => 403,
+            ], 403);
         }
         return $next($request);
     }
