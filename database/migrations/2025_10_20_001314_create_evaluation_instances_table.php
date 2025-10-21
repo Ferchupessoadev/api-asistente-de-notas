@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('evaluation_instances', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['examen', 'tarea', 'proyecto', 'trabajo practico', 'participacion', 'actividad']);
+            $table->enum('type', ['examen', 'tarea', 'proyecto', 'trabajo practico', 'participacion', 'actividad', 'otros']);
             $table->date('fecha');
             $table->integer('nota')->unsigned();
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
