@@ -3,9 +3,6 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\StudentsController;
-use App\Http\Controllers\SubjectController;
-use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

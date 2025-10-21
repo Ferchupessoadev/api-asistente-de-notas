@@ -5,7 +5,7 @@ use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\SubjectController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth.sanctum','admin'])->group(function () {
+Route::middleware(['auth:sanctum','admin'])->group(function () {
     // Subject Routes
     Route::get('/subjects', [SubjectController::class, 'index']);
     Route::get('/subjects/{subject}', [SubjectController::class, 'show']);
