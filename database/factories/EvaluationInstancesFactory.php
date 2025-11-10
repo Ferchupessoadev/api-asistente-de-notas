@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Student;
+use App\Models\Subject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,12 @@ class EvaluationInstancesFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            "type" => $this->faker->randomElement(['examen', 'tarea', 'proyecto', 'trabajo practico', 'participacion', 'actividad', 'otros']),
+            "description" => $this->faker->sentence(),
+            "fecha" => $this->faker->date(),
+            "nota" => $this->faker->numberBetween(1, 10),
+            "student_id" => $this->faker->numberBetween(1, 10),
+            "subject_id" => $this->faker->numberBetween(1, 10),
         ];
     }
 }

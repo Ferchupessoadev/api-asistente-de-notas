@@ -21,12 +21,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'fernandomatiaspessoa471@gmail.com',
             'password' => Hash::make('123ferchu')
         ]);
+        
+       
 
         $users = User::factory(10)->create();
-
-        foreach ($users as $user) {
-            $user->syncRoles(['user', 'teacher']);
-        }
 
         $this->call([
             RoleSeeder::class,
@@ -34,6 +32,12 @@ class DatabaseSeeder extends Seeder
             StudentSeeder::class,
             SubjectSeeder::class,
         ]);
+
+        foreach ($users as $userTeacher) {
+            $userTeacher->syncRoles(['user', 'teacher']);
+        }
+
+       
 
         $user->assignRole('admin');
         $user->assignRole('teacher');

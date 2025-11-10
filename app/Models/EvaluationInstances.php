@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class EvaluationInstances extends Model
 {
-    /** @use HasFactory<\Database\Factories\EvaluationInstancesFactory> */
     use HasFactory;
 
     protected $table = 'evaluation_instances';
@@ -32,6 +31,13 @@ class EvaluationInstances extends Model
 
     public function teacher()
     {
-        return $this->subject->teacher;
+        return $this->hasOneThrough(
+        User::class, // Modelo destino
+        Subject::class, // Modelo intermedio
+        'id',           // Clave local en Subject
+        'id',           // Clave local en Teacher
+        'subject_id',   // Clave en EvaluationInstances
+        'teacher_id'    // Clave en Subject
+    );
     }
 }
