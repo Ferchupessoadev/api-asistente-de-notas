@@ -17,6 +17,10 @@ class CourseTeacherController extends Controller
                 $query->where('teacher_id', $user->id);
             })->get();
 
+            if ($courses->isEmpty()) {
+                return response()->json(['message' => 'No courses found for this teacher'], 404);
+            }
+
             return response()->json($courses, 200);
         }
 

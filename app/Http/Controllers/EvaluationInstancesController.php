@@ -18,11 +18,14 @@ class EvaluationInstancesController extends Controller
         $user = Auth::user();
 
         $instances = EvaluationInstances::whereHas('teacher', function ($query) use ($user) {
-            $query->where('id', $user->id);
+            $query->where('users.id', $user->id);
         })->get();
 
-        if (empty($instances)) {
-            return response()->json(['message' => 'No evaluation instances found for this teacher.'], 404);
+        if ($instances->isEmpty()) {
+            return response()->json([
+                'message' => 'No evaluation instances found for this teacher.',
+                "instances" => $instances,
+            ], 404);
         }
 
         return response()->json($instances, 200);
