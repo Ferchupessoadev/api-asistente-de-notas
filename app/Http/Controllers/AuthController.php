@@ -31,17 +31,17 @@ class AuthController extends Controller
         ], 200);
     }
 
-    public function register(RegisterFormRequest $request): JsonResponse  
+    public function register(RegisterFormRequest $request): JsonResponse
     {
         $user = User::create(attributes: $request->validated());
         $headers = [];
 
         $user->assignRole('user');
-        
+
         return response()->json(data:[
             'message' => 'Usuario creado con exito',
         ], status: 200, headers: $headers);
-    }       
+    }
 
     public function logout()
     {
