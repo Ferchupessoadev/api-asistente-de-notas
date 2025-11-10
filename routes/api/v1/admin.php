@@ -4,6 +4,7 @@ use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
+use App\Models\Subject;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum','admin'])->group(function () {
@@ -34,4 +35,6 @@ Route::middleware(['auth:sanctum','admin'])->group(function () {
     Route::post('/users', [UserController::class, 'store']);
     Route::put('/users/{user}', [UserController::class, 'update']);
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
+
+    Route::post('/users/{user}/{role}', [UserController::class, 'assignRoleToUser']);
 });
