@@ -20,7 +20,7 @@ class SubjectFactory extends Factory
         return [
             'name' => $this->faker->word(),
             'course_id' => $this->faker->numberBetween(1, 6),
-            'teacher' => $this->faker->name(),
+            'teacher_id' => $this->faker->numberBetween(2, 10),
         ];
     }
 }

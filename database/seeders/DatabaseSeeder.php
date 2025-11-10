@@ -22,6 +22,12 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('123ferchu')
         ]);
 
+        $users = User::factory(10)->create();
+
+        foreach ($users as $user) {
+            $user->syncRoles(['user', 'teacher']);
+        }
+
         $this->call([
             RoleSeeder::class,
             CourseSeeder::class,
