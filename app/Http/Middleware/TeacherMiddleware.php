@@ -16,7 +16,7 @@ class TeacherMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
-        if(!$user || !$user->hasRole('teacher')) 
+        if (!$user || (!$user->hasRole('teacher') && !$user->hasRole('admin')))
         {
             return response()->json([
                 'message' => 'Resource forbidden for non-teacher users',
