@@ -14,8 +14,13 @@ class Subject extends Model
     protected $fillable = [
         'name',
         'course_id',
-        'teacher',
+        'teacher_id',
     ];
+
+    public function teacher()
+    {
+        return $this->belongsTo(User::class, 'teacher_id');
+    }
 
     public function course()
     {
@@ -24,13 +29,6 @@ class Subject extends Model
 
     public function students()
     {
-        return $this->hasManyThrough(
-            Student::class,  // Modelo final
-            Course::class,   // Modelo intermedio
-            'id',            // Foreign key en Course (clave primaria que conecta con Subject)
-            'course_id',     // Foreign key en Student (clave foránea que conecta con Course)
-            'course_id',     // Local key en Subject (clave foránea hacia Course)
-            'id'             // Local key en Course
-        );
+        return $this->hasMany(Student::class, 'course_id', 'course_id');
     }
 }
