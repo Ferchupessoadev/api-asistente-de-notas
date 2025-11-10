@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\EvaluationInstances;
 use Illuminate\Http\Request;
 
-class EvaluationInstances extends Controller
+class EvaluationInstancesController extends Controller
 {
     /**
      * Display a listing of the resource.
