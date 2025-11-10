@@ -25,3 +25,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
 require __DIR__ . '/admin.php';
+require __DIR__ . '/teacher.php';

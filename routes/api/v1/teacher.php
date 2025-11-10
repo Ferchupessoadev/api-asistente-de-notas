@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\SubjectController;
+use App\Models\EvaluationInstances;
 use Illuminate\Support\Facades\Route;
 
 
-Route::midelleware(['auth:sanctum','teacher'])->group(function () {
-    Route::get('/subjects', [SubjectController::class, 'index']);
-})
+Route::middleware(['auth:sanctum','teacher'])->group(function () {
+    // Evaluations instances Routes
+    Route::get('/evaluation-instances', [EvaluationInstances::class, 'index']);
+});
