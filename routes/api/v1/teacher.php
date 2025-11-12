@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CourseTeacherController;
 use App\Http\Controllers\EvaluationInstancesController;
+use App\Http\Controllers\SubjectTeacherController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -12,7 +13,10 @@ Route::middleware(['auth:sanctum','teacher'])->group(function () {
     Route::get('/evaluation-instances/{evaluationInstance}', [EvaluationInstancesController::class, 'show']);
     Route::put('/evaluation-instances/{evaluationInstance}', [EvaluationInstancesController::class, 'update']);
     Route::delete('/evaluation-instances/{evaluationInstance}', [EvaluationInstancesController::class, 'destroy']);
-    
+
     // Courses taught by the teacher
-    Route::get('/courses/teacher', [CourseTeacherController::class, 'index']);
+    Route::get('/teacher/courses', [CourseTeacherController::class, 'index']);
+
+    // Subjects taught by the teacher
+    Route::get('/teacher/courses/{course}/subjects', [SubjectTeacherController::class, 'subjects']);
 });

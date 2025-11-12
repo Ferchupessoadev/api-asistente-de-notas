@@ -43,13 +43,14 @@ class EvaluationInstancesController extends Controller
             'student_id' => 'required|exists:students,id',
             'subject_id' => 'required|exists:subject,id',
         ]);
+
         $user = Auth::user();
         $student = Student::find($validated['student_id']);
         $subject = Subject::find($validated['subject_id']);
         $course = $student->course;
         $teacher = $subject->teacher;
-        
-        
+
+
         if ($user->id !== $teacher->id) {
             return response()->json(['message' => 'Unauthorized.'], 403);
         }
@@ -59,10 +60,10 @@ class EvaluationInstancesController extends Controller
         }
 
         $evaluationInstance = EvaluationInstances::create($validated);
-        
+
 
         return response()->json([
-            'message' => 'Instancias de evaluación creada con exito', 
+            'message' => 'Instancias de evaluación creada con exito',
             'instances' => $evaluationInstance
         ], 201);
     }
@@ -73,7 +74,7 @@ class EvaluationInstancesController extends Controller
     public function show(EvaluationInstances $evaluationInstances)
     {
         $user = Auth::user();
-        
+
         $subject = $evaluationInstances->subject;
         $teacher = $subject->teacher;
 
@@ -89,7 +90,13 @@ class EvaluationInstancesController extends Controller
      */
     public function update(Request $request, EvaluationInstances $evaluationInstances)
     {
-        //
+        $validated = $request->validate([
+            'type' => ['sometimes', 'string'],
+            'fecha' => ['sometimes', 'date'],
+            'nota' => ['sometimes', 'numeric'],
+            'student_id' => ['sometimes', 'exists:students,id'],
+            'subject_id' => ['sometimes', 'exists:subject,id'],
+        ]);
     }
 
     /**
@@ -97,6 +104,14 @@ class EvaluationInstancesController extends Controller
      */
     public function destroy(EvaluationInstances $evaluationInstances)
     {
-        //
+        $user = Auth::user();
+        $teacher = $evaluationInstances->teacher;
+
+        if ($user->id !== $teacher->id) {
+            return response()->json(['message' => 'Unauthorized.'], 403);
+        }
+
+        $evaluationInstances->delete();
+        return response()->json(['message' => 'Instancias de evaluación eliminada con exito'], 200);
     }
 }

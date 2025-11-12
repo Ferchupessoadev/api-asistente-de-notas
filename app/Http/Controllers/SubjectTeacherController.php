@@ -7,10 +7,12 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
-class CourseTeacherController extends Controller
+class SubjectTeacherController extends Controller
 {
-    public function index(Request $request)
+    /**
+     * Display a listing of the resource.
+     */
+    public function subjects(Request $request, Course $course)
     {
         $authUser = Auth::user();
 
@@ -18,7 +20,6 @@ class CourseTeacherController extends Controller
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        // Si es admin y pasa user_id, vemos los cursos de ese profesor
         $user = $authUser;
         if ($authUser->hasRole('admin') && $request->filled('user_id')) {
             $user = User::find($request->user_id);
@@ -28,14 +29,15 @@ class CourseTeacherController extends Controller
             }
         }
 
-        $courses = Course::whereHas('subjects', function ($query) use ($user) {
-            $query->where('teacher_id', $user->id);
-        })->get();
+        $subjects = $course->subjects()
+            ->where('teacher_id', $user->id)
+            ->with('teacher')
+            ->get();
 
-        if ($courses->isEmpty()) {
-            return response()->json(['message' => 'No courses found for this teacher'], 404);
+        if ($subjects->isEmpty()) {
+            return response()->json(['message' => 'No subjects found'], 404);
         }
 
-        return response()->json($courses, 200);
+        return response()->json($subjects, 200);
     }
 }
