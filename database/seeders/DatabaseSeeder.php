@@ -21,23 +21,27 @@ class DatabaseSeeder extends Seeder
             'email' => 'fernandomatiaspessoa471@gmail.com',
             'password' => Hash::make('123ferchu')
         ]);
-        
-       
+
+
 
         $users = User::factory(10)->create();
 
         $this->call([
-            RoleSeeder::class,
-            CourseSeeder::class,
-            StudentSeeder::class,
-            SubjectSeeder::class,
+            RoleSeeder::class
         ]);
 
         foreach ($users as $userTeacher) {
             $userTeacher->syncRoles(['user', 'teacher']);
         }
 
-       
+        $this->call([
+            CourseSeeder::class,
+            SubjectSeeder::class,
+            StudentSeeder::class,
+            EvaluationInstancesSeeder::class
+        ]);
+
+
 
         $user->assignRole('admin');
         $user->assignRole('teacher');

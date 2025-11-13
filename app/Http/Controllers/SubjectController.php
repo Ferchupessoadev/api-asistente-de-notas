@@ -34,8 +34,8 @@ class SubjectController extends Controller
     {
         $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'course_id' => ['required', 'integer', 'max:255', 'exists:courses,id'],
-            'teacher' => ['required', 'string', 'max:255'],
+            'course_id' => ['required', 'integer', 'exists:courses,id'],
+            'teacher_id' => ['required', 'integer', 'exists:users,id'],
         ]);
 
         $subject = Subject::create($validatedData);

@@ -10,7 +10,7 @@ Route::middleware(['auth:sanctum','admin'])->group(function () {
     // Subject Routes
     Route::get('/subjects', [SubjectController::class, 'index']);
     Route::get('/subjects/{subject}', [SubjectController::class, 'show']);
-    Route::post('/subjects/{subject}', [SubjectController::class, 'store']);
+    Route::post('/subjects', [SubjectController::class, 'store']);
     Route::put('/subjects/{subject}', [SubjectController::class, 'update']);
     Route::delete('/subjects/{subject}', [SubjectController::class, 'destroy']);
 

@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Course;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,10 +19,19 @@ class SubjectFactory extends Factory
      */
     public function definition(): array
     {
+
+        $users = User::all()->where('id', '!=', 1);
+
+        $user = $this->faker->randomElement($users);
+
+        $courses = Course::all();
+
+        $course = $this->faker->randomElement($courses);
+
         return [
             'name' => $this->faker->word(),
-            'course_id' => $this->faker->numberBetween(1, 6),
-            'teacher_id' => $this->faker->numberBetween(2, 10),
+            'course_id' => $course->id,
+            'teacher_id' => $user->id,
         ];
     }
 }

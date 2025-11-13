@@ -57,6 +57,10 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        if (!Auth::user()->hasRole('admin')) {
+            return response()->json(['message' => 'Not Found.'], 404);
+        }
+
         $validated = $request->validate([
             'name' => ['sometimes', 'string', 'max:255'],
             'email' => ['sometimes', 'string', 'email', 'max:255'],

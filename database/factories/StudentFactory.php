@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Course;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,10 +20,18 @@ class StudentFactory extends Factory
      */
     public function definition(): array
     {
+        $courses = Course::all();
+
+        if ($courses->isEmpty()) {
+            $course = Course::factory()->create();
+        } else {
+            $course = $this->faker->randomElement($courses);
+        }
+
         return [
-            'name' => $this->faker->name(),
+            'name' => $this->faker->firstName(),
             'surname' => $this->faker->lastName(),
-            'course_id' => $this->faker->numberBetween(1, 6),
+            'course_id' => $course->id,
         ];
     }
 }
