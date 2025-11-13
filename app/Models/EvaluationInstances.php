@@ -13,6 +13,7 @@ class EvaluationInstances extends Model
 
     protected $fillable = [
         'type',
+        'description',
         'fecha',
         'nota',
         'student_id',
@@ -27,17 +28,5 @@ class EvaluationInstances extends Model
     public function subject()
     {
         return $this->belongsTo(Subject::class);
-    }
-
-    public function teacher()
-    {
-        return $this->hasOneThrough(
-        User::class, // Modelo destino
-        Subject::class, // Modelo intermedio
-        'id',           // Clave local en Subject
-        'id',           // Clave local en Teacher
-        'subject_id',   // Clave en EvaluationInstances
-        'teacher_id'    // Clave en Subject
-    );
     }
 }

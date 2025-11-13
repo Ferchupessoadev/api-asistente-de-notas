@@ -18,6 +18,10 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/me', [HomeController::class, 'index']);
 
+    Route::get('/avatar', [HomeController::class, 'getAvatar']);
+
+    Route::post('/avatar', [HomeController::class, 'setAvatar']);
+
     Route::get('/courses/{course}/students', [CoursesController::class, 'getStudentsByCourse']);
 
     Route::post('/logout', [AuthController::class, 'logout']);

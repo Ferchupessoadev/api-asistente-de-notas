@@ -15,10 +15,7 @@ class StudentsController extends Controller
     {
         $students = Student::all();
 
-        return response()->json([
-            'students' => $students,
-            'message' => 'Listado de estudiantes',
-        ], 200);
+        return response()->json($students ,200);
     }
 
     /**
