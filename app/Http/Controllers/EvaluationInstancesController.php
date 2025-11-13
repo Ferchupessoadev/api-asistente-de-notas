@@ -17,14 +17,15 @@ class EvaluationInstancesController extends Controller
     {
         $user = Auth::user();
 
-        $instances = EvaluationInstances::whereHas('teacher', function ($query) use ($user) {
-            $query->where('users.id', $user->id);
+        $instances = EvaluationInstances::whereHas('subject', function ($query) use ($user) {
+            $query->whereHas('teacher', function ($query) use ($user) {
+                $query->where('users.id', $user->id);
+            });
         })->get();
 
         if ($instances->isEmpty()) {
             return response()->json([
-                'message' => 'No evaluation instances found for this teacher.',
-                "instances" => $instances,
+                'message' => 'Not Found.',
             ], 404);
         }
 
@@ -38,6 +39,7 @@ class EvaluationInstancesController extends Controller
     {
         $validated = $request->validate([
             'type' => 'required|string',
+            'description' => 'required|string',
             'fecha' => 'required|date',
             'nota' => 'required|numeric',
             'student_id' => 'required|exists:students,id',
@@ -75,11 +77,10 @@ class EvaluationInstancesController extends Controller
     {
         $user = Auth::user();
 
-        $subject = $evaluationInstances->subject;
-        $teacher = $subject->teacher;
+        $teacher = $evaluationInstances->subject->teacher;
 
         if ($user->id !== $teacher->id) {
-            return response()->json(['message' => 'Unauthorized.'], 403);
+            return response()->json(['message' => 'Not Found.'], 404);
         }
 
         return response()->json($evaluationInstances, 200);
@@ -90,13 +91,26 @@ class EvaluationInstancesController extends Controller
      */
     public function update(Request $request, EvaluationInstances $evaluationInstances)
     {
+        $user = Auth::user();
+        $teacher = $evaluationInstances->subject->teacher;
+
+        if ($user->id !== $teacher->id) {
+            return response()->json(['message' => 'Not Found.'], 404);
+        }
+
         $validated = $request->validate([
             'type' => ['sometimes', 'string'],
+            'description' => ['sometimes', 'string'],
             'fecha' => ['sometimes', 'date'],
             'nota' => ['sometimes', 'numeric'],
-            'student_id' => ['sometimes', 'exists:students,id'],
-            'subject_id' => ['sometimes', 'exists:subject,id'],
         ]);
+
+        $evaluationInstances->update($validated);
+
+        return response()->json([
+            'message' => 'Instancias de evaluación actualizada con exito',
+            'instances' => $evaluationInstances
+        ], 200);
     }
 
     /**
@@ -105,13 +119,47 @@ class EvaluationInstancesController extends Controller
     public function destroy(EvaluationInstances $evaluationInstances)
     {
         $user = Auth::user();
-        $teacher = $evaluationInstances->teacher;
+        $teacher = $evaluationInstances->subject->teacher;
 
         if ($user->id !== $teacher->id) {
-            return response()->json(['message' => 'Unauthorized.'], 403);
+            return response()->json(['message' => 'Not Found.'], 404);
         }
 
         $evaluationInstances->delete();
+
         return response()->json(['message' => 'Instancias de evaluación eliminada con exito'], 200);
+    }
+
+    public function getBySubjectAndStudent(Subject $subject, Student $student)
+    {
+        $user = Auth::user();
+        $teacher = $subject->teacher;
+
+        if ($user->id !== $teacher->id) {
+            return response()->json(['message' => 'Not found.'], 404);
+        }
+
+        $data = EvaluationInstances::where('subject_id', $subject->id)
+            ->where('student_id', $student->id)
+            ->whereHas('subject', function ($query) use ($user) {
+                $query->where('teacher_id', $user->id);
+            })
+            ->get();
+
+        if ($data->isEmpty()) {
+            return response()->json([
+                'message' => 'Not Found.',
+            ], 404);
+        }
+
+
+        return response()->json([
+            'student' => [
+                'id' => $student->id,
+                'name' => $student->name,
+                'surname' => $student->surname
+            ],
+            'instances' => $data,
+        ], 200);
     }
 }
