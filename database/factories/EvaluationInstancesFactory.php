@@ -23,7 +23,6 @@ class EvaluationInstancesFactory extends Factory
             "type" => $this->faker->randomElement(['examen', 'tarea', 'proyecto', 'trabajo practico', 'participacion', 'actividad', 'otros']),
             "description" => $this->faker->sentence(),
             "fecha" => $this->faker->dateTime(),
-            "nota" => $this->faker->numberBetween(1, 10),
         ];
     }
 }

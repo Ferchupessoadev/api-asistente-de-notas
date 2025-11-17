@@ -38,7 +38,8 @@ class DatabaseSeeder extends Seeder
             CourseSeeder::class,
             SubjectSeeder::class,
             StudentSeeder::class,
-            EvaluationInstancesSeeder::class
+            EvaluationInstancesSeeder::class,
+            GradesSeeder::class
         ]);
 
 

@@ -15,18 +15,21 @@ class EvaluationInstances extends Model
         'type',
         'description',
         'fecha',
-        'nota',
-        'student_id',
         'subject_id',
     ];
-
-    public function student()
-    {
-        return $this->belongsTo(Student::class);
-    }
 
     public function subject()
     {
         return $this->belongsTo(Subject::class);
+    }
+
+    public function grades()
+    {
+        return $this->hasMany(Grades::class, 'evaluation_instances_id');
+    }
+
+    public function student()
+    {
+        return $this->grades->student;
     }
 }

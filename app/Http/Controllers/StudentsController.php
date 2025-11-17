@@ -13,7 +13,7 @@ class StudentsController extends Controller
      */
     public function index(): JsonResponse
     {
-        $students = Student::all();
+        $students = Student::with('course')->with('grades')->get();
 
         return response()->json($students ,200);
     }

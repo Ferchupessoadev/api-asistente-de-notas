@@ -12,7 +12,7 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $subject = Subject::all();
+        $subject = Subject::with('teacher')->with('course')->get();
 
         $jsonResponse = [
             'subject' => $subject,
@@ -51,6 +51,8 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
+        $subject = Subject::with('teacher')->with('course')->find($subject->id);
+
         return response()->json([
             'subject' => $subject
         ], 200);
